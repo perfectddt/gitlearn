@@ -1,0 +1,392 @@
+* 笔记 C++基础入门
+:PROPERTIES:
+:NOTER_DOCUMENT: 笔记.pdf
+:NOTER_PAGE: 203
+:END:
+** day01
+:PROPERTIES:
+:NOTER_PAGE: 1
+:END:
+*** namespace 命名空间
+:PROPERTIES:
+:NOTER_PAGE: 14
+:END:
+1. {}+作用实体
+2. using namespace wd;
+3. using std::out
+4. ::作用域限定符+嵌套使用
+*** 匿名命名空间
+:PROPERTIES:
+:NOTER_PAGE: 21
+:END:
+全局变量可以跨模块调用
+匿名命名空间=静态变量 static⇒
+extern 跨模块调用(匿名空间无法跨模块)
+*** 同一个模块中，可以定义多次命名空间；
+:PROPERTIES:
+:NOTER_PAGE: 24
+:END:
+在不同的模块中，也可以定义多次命名空间
+命名空间就像一个容器（黑洞），可以无限定义实体
+** day02
+:PROPERTIES:
+:NOTER_PAGE: 25
+:END:
+*** 宏定义与 const 常量有什么区别
+:PROPERTIES:
+:NOTER_PAGE: 27
+:END:
+|       | 发生的时机 | 类型检查  |
+|-------+----------+----------|
+| 宏定义 | 预处理    | 字符串替换 |
+| const | 编译      | 有,更安全 |
+**** 宏定义有可能将错误延迟到运行时才发现以后要定义常量时，尽量使用 const 关键字或者枚举类型
+**** 概念
+***** 数组 *指针* 、指针 *数组*
+***** 函数 *数组* 、指针 *函数*
+***** 常量 *指针* 、指针 *常量*
+[[file:./mainImage/_20230424_133934_7Ao0g2.png]]
+#+BEGIN_SRC c++
+  int a=10          //记忆——常量=const;;——指针=*
+  const int* p1=&a; //常量指针(pointer to const)
+  int const *p2=&a; //常量指针————不能修改的是所指空间的值
+  int* const p3=&a; //指针常量————不能修改指针的指向
+#+END_SRC
+*** new/delete 与 malloc/calloc 
+:PROPERTIES:
+:NOTER_PAGE: 31
+:HIGHLIGHT: #s(pdf-highlight 31 ((0.4119318181818182 0.14141414141414144 0.17045454545454547 0.13636363636363638)))
+:END:
+**** 内存泄漏检测工具:valgrinD
+*** 引用(reference)
+:PROPERTIES:
+:NOTER_PAGE: 34
+:END:
+类型名 & reference=variable;
+**** 引用作为函数的参数
+***** 值传递 x、地址传递*p⇒&x
+***** 引用传递& x
+**** 引用作为函数的返回值
+:PROPERTIES:
+:NOTER_PAGE: 40
+:END:
+1. 类型的变量————int/struct MyType&
+2. 指针类型————int*/struct MyType*
+3. 引用类型————int &/struct Mytype&
+**** 第 42 页的笔记
+*** 强制转换
+:PROPERTIES:
+:NOTER_PAGE: 42
+:END:
+****  C 风格 TYPE （TYPE）EXPRESSION
+**** C++的强制转换
+static_cast/const_cast/dynamic_cast/reinterpret_cast
+*** 函数重载(名字改编 name mangling)
+:PROPERTIES:
+:NOTER_PAGE: 44
+:END:
+函数名相同(类型、个数、顺序不同)
+c 语言函数尾加数字,C++名字改编(nm 查看.o)
+*** c/c++混合编程
+:PROPERTIES:
+:NOTER_PAGE: 49
+:END:
+#+begin_src c++
+  #ifdef __cplusplus
+  extern "c"
+  {
+  #endif
+  
+  #ifdef __cplusplus
+  {//end of extern "c"
+  #endif
+#+end_src
+*** 默认参数
+:PROPERTIES:
+:NOTER_PAGE: 50
+:END:
+*** inline 函数
+:PROPERTIES:
+:NOTER_PAGE: 52
+:END:
+******* 异常处理
+** day03
+:PROPERTIES:
+:NOTER_PAGE: 54
+:END:
+*** 内存布局
+:PROPERTIES:
+:NOTER_PAGE: 55
+:END:
+*** 类和对象
+:PROPERTIES:
+:NOTER_PAGE: 58
+:END:
+** day04
+:PROPERTIES:
+:NOTER_PAGE: 66
+:END:
+*** 面向对象
+:PROPERTIES:
+:NOTER_PAGE: 70
+:END:
+*** 类的定义和声明
+:PROPERTIES:
+:NOTER_PAGE: 71
+:END:
+#+begin_src c++
+class 类名{
+public://公有数据成员和成员函数
+protected://保护数据成员和成员函数
+private://私有数据成员和成员函数
+};// 千万不要忘了这个分号
+#+end_src
+*** class 和 struct 的区别
+:PROPERTIES:
+:NOTER_PAGE: 74
+:END:
+struct 默认 public；class 默认 private
+
+
+*** 对象
+**** 对象的创建规则
+:PROPERTIES:
+:NOTER_PAGE: 76
+:END:
+1.当类中没有显式定义构造函数时，系统会自动提供一个默认（无参）构造函数
+2.一旦当类中显式提供了有参构造函数时，系统就不会再自动提供一个默认（无参）构造函数
+3.如果还希望通过默认构造函数创建对象，则必须要手动提供一个默认构造函数
+4.构造函数可以重载
+**** 对象数据成员初始化问题(:,)
+:PROPERTIES:
+:NOTER_PAGE: 78
+:END:
+***** 初始化顺序问题——与声明顺序有关
+:PROPERTIES:
+:NOTER_PAGE: 79
+:END:
+***** 第 80 页的笔记
+**** 对象的销毁——析构函数
+:PROPERTIES:
+:NOTER_PAGE: 80
+:END:
+析构函数只有一个，默认提供，销毁自动调用
+***** 析构函数的调用时机
+:PROPERTIES:
+:NOTER_PAGE: 81
+:END:
+栈、全局变量、静态变量、堆对象
+**** 本类型对象的复制（拷贝构造函数）——对象未创建
+:PROPERTIES:
+:NOTER_PAGE: 84
+:END:
+类名(const 类名&)
+非 const 引用无法绑定到右值
+左值和右值
+**** 拷贝构造函数的调用时机
+:PROPERTIES:
+:NOTER_PAGE: 87
+:END:
+1. 当用一个已经存在的对象初始化另一个新对象
+2. 当函数参数是对象，形参与实参结合时（实参初始化形参）
+3. 当函数的返回值是对象，执行 return 语句时
+** day05
+:PROPERTIES:
+:NOTER_PAGE: 90
+:END:
+*** this 指向对象(为地址)
+:PROPERTIES:
+:NOTER_PAGE: 117
+:END:
+1. 对象调用函数时，是如何找到自己本对象的数据成员的？this 指针
+2. 类中定义的成员函数存放在什么位置？ 程序代码区
+3. this 指针代表的是当前对象
+4. this 指针在什么位置？ 作为成员函数第一个隐含的参数
+5. this 指针的形式是什么？  类名 * const this  保护 this 不会被修改指向
+*** 调用赋值运算符函数——对象已经创建
+:PROPERTIES:
+:NOTER_PAGE: 118
+:END:
+1. 形式：
+#+begin_src 
+类名 & operator=(const 类名 &);
+#+end_src
+*** 手动提供赋值运算符函数
+1. 考虑自复制
+2. c2 对象要先回收原来的申请空间
+3. 进行深拷贝
+4. 返回*this
+*** 特殊的数据成员初始化
+:PROPERTIES:
+:NOTER_PAGE: 121
+:END:
+**** 放到构造函数初始化表达式中进行初始化
+1. 引用成员
+2. const 成员
+3. 对象成员
+**** 类之外进行初始化
+***** 静态成员
+:PROPERTIES:
+:NOTER_PAGE: 123
+:END:
+1. 存储再全局静态区,被整个类的所有对象共享
+***** 静态成员函数
+   在某一个成员函数的前面加上 static 关键字，不能是构造函数/析构函数/赋值运算符函数
+****** 特点：
+A. 没有 this 指针的存在
+B. 不能访问非静态的数据成员和成员函数
+C.只能访问静态的数据成员和成员函数
+D. 静态成员函数可以直接通过类名调用，不需要对象存在
+**** const 成员函数
+:PROPERTIES:
+:NOTER_PAGE: 126
+:END:
+#+begin_src 
+void print() const;
+#+end_src
+****** 特点
+该成员函数不能修改数据成员，只能读取数据成员
+**** 非 const 对象
+:PROPERTIES:
+:NOTER_PAGE: 127
+:END:
++ 可以调用 const 成员函数
++ 如果类中只能提供一个版本的成员函数，则一定是 const 版本的
+*** 单例模式
+:PROPERTIES:
+:NOTER_PAGE: 128
+:END:
+**** 1. 需求：一个类只能生成一个对象，且是唯一的对象
+**** 解决方案：
+   1.将构造函数私有化
+   2.在类中定义一个静态的指向本类型的指针变量
+   3.定义一个返回值为类指针的静态成员函数
+**** 2. 应用场景：
+A. 用单例模式替换全局变量
+B. 读取配置文件（程序的输入）
+C. 词典、网页库
+*** 三合成原则
+拷贝构造函数、赋值运算符函数、析构函数
+只要手动定义其中的一个，另外的两个也需要手动定义
+*** 字符串
+**** C 风格
+strlen/strcmp/strncmp/strchr/strstr/strcpy/strncpy/strcat/strncat
+**** C++风格
+:PROPERTIES:
+:NOTER_PAGE: 131
+:END:
+std::string⇒basic_string
+*** std::vector
+:PROPERTIES:
+:NOTER_PAGE: 133
+:END:
+*** new 表达式
+:PROPERTIES:
+:NOTER_PAGE: 137
+:END:
+*** delete 表达式
+:PROPERTIES:
+:NOTER_PAGE: 138
+:END:
+*** 创建栈、堆需要的条件
+:PROPERTIES:
+:NOTER_PAGE: 140
+:END:
+** day06 C++输入输出流
+:PROPERTIES:
+:NOTER_PAGE: 143
+:END:
+*** istream cin; //标准输入 0
+:PROPERTIES:
+:NOTER_PAGE: 148
+:END:
+ostream cout; //标准输出 1 
+ostream cerr; //标准错误 2
+*** 流都有四种状态
+:PROPERTIES:
+:NOTER_PAGE: 149
+:END:
+| goodbit | 有效状态，只有流有效时，才能正常使用 |
+| badbit  | 表示系统级别的错误，无法恢复        |
+| failbit | 表示发生了可以恢复的错误           |
+| eofbit  | 到达了流的末尾                    |
+*** 重置流的状态
+:PROPERTIES:
+:NOTER_PAGE: 151
+:END:
+1. 调用 clear 方法，进行重置
+2. 清空缓冲区
+** day07
+:PROPERTIES:
+:NOTER_PAGE: 155
+:END:
+*** 禁止隐式转换
+:PROPERTIES:
+:NOTER_PAGE: 163
+:END:
+[[file:./mainImage/_20230424_171733_gZ8zPI.png]]
+*** 匿名对象
+*** 缓冲区
+:PROPERTIES:
+:NOTER_PAGE: 174
+:END:
+**** 全缓冲区、行缓冲区、非缓冲区
+*** cout/cerr/clog
+*** 文件输入流 ifstream
+:PROPERTIES:
+:NOTER_PAGE: 177
+:END:
+**** 三种打开的方式
+**** getline
+*** 文件输出流 ofstream
+:PROPERTIES:
+:NOTER_PAGE: 179
+:END:
+*** 字符串 IO
+:PROPERTIES:
+:NOTER_PAGE: 183
+:END:
+1. istringstream       字符串输入流， 将字符串转换为其他类型
+2. ostringstream     字符串输出流， 将其他类型转换为字符串
+3. stringstream
+** day08
+:PROPERTIES:
+:NOTER_PAGE: 187
+:END:
+*** 软件的安装
+:PROPERTIES:
+:NOTER_PAGE: 188
+:END:
+**** 命令行方式
+**** 源码安装的方式
+*** log4cpp 开源库
+:PROPERTIES:
+:NOTER_PAGE: 189
+:END:
+**** 编译时找不到库错误
+**** 运行时找不到动态库的错误
+*** 源码阅读工具
+:PROPERTIES:
+:NOTER_PAGE: 191
+:END:
+**** SlickEdit
+**** SourceInsight
+*** log4cpp
+:PROPERTIES:
+:NOTER_PAGE: 194
+:END:
+[[https://log4cpp.sourceforge.net/][官方文档]]
+*** 回卷文件
+:PROPERTIES:
+:NOTER_PAGE: 202
+:END:
+* 笔记 day01-08
+:PROPERTIES:
+:NOTER_DOCUMENT: 笔记 day01-08.pdf
+:NOTER_PAGE: 1
+:END:
+* 笔记day01-08
+:PROPERTIES:
+:NOTER_DOCUMENT: 笔记day01-08.pdf
+:NOTER_PAGE: 1
+:END:
